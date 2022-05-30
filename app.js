@@ -19,7 +19,7 @@ async function scrapeDepartment(url) {
   await page.goto(url);
 
   const [el] = await page.$x('//*[@id="mainTable"]/tbody');
-  const txt = await el.getProperty("textContent");
+  const txt = await el.getProperty('textContent')
   const srcRawText = await txt.jsonValue();
 
   browser.close();
