@@ -9,23 +9,24 @@
 <header>
     <nav>
         <ul>
-            <li>Motive</li>
-            <li>About</li>
-            <li>Contact</li>
+            <li><a href="#motive">Motive</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#form">Form</a></li>
+            <li><a href="#contact">Contact</a></li>
 
         </ul>
     </nav>
 </header>
 <body>
     <h1>Welcome to your Degree Visualizer!</h1>
-    <section class="motive">
+    <section id="motive">
         <h2>This page is made by students for students!</h2>
         <p>Throughout our time in university, we have noticed planning out your degree and make sure you have all your pre-requisites in check.</p>
-        <p>Gone are the days where you rely on the very NOT user friendly Degree Navigator.</p>
+        <p>Gone are the days where you rely on the very <strong>NOT</strong> user friendly <em>Degree Navigator</em>.</p>
         <p>Gone are the days where you have to wait weeks to book an appointment with an advisor.</p>
         <p>This page will make our life easier by providing a visually appealing course schedule while highlighting the pre, co, and post requisites needed to complete your degree!</p>
     </section>
-    <section class="about">
+    <section id="about">
         <h2>About the creators of this website!</h2>
         <img src="" alt="">
         <h3>Youssef Mahmoud</h3>
@@ -41,8 +42,24 @@
         <main>
             <h2>Let us get to know you!</h2>
             <p>Answer the following questions to provide you with the best experience to see your degree!</p>
-            
+            <div id="form">
+                <form action="#" method="post">
+                    <label for="major">Choose one of the following majors:</label>
+                    <select name="major" id="major" required>
+                        <option value="electrical">Electrical</option>
+                        <option value="machanical">Mechanical</option>
+                        <option value="civil">Civil</option>
+                        <option value="manufacturing">Manufacturing</option>
+                        <option value="mechatronics">Mechatronics</option>
+                    </select>
+                    <label for="standing">Enter your current year standing:</label>
+                    <input type="number" id="stading" name="standing" min="1" max="4" required>
+                </form>
+            </div>
         </main>
+    </section>
+    <section id="contact">
+        <p>If you notice any bugs or concers regarding the website do not hesitate to contact us at:</p>
     </section>
 </body>
 </html>
