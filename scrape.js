@@ -1,33 +1,25 @@
 const cheerio = require("cheerio");
 const axios = require("axios");
 
-//const depts = ["APSC"];
-const depts = ["APSC", "ENGR"];
+const depts = ["APSC"];
+// const depts = ["APSC", "ENGR"];
 
-// const sections = [".section1"];
-const sections = [".section1", ".section2"];
+const sections = [".section1"];
+// const sections = [".section1", ".section2"];
 
 var gCourses = [];
 
 async function main() {
-  await callCourseFinderApisSequential();
-  console.log(gCourses);
-  console.log(gCourses[0]);
+  await callApisSequential();
 
-  callCourseParserApisSequential();
+  console.log("hi");
+  console.log(gCourses);
 
   // Uncomment to run all the API calls in parallel. See comments in function
   //callApisParellel();
 }
 
-async function callCourseParserApisSequential() {
-  for (let i in gCourses) {
-    await parseCourse(i);
-    break;
-  }
-}
-
-async function callCourseFinderApisSequential() {
+async function callApisSequential() {
   // Method 1: Await each promise sequentially
   // This will call each API one by one, once one returns the next is called
   // This is slow if there are 10+ API calls. But it is ok if you don't care about time
@@ -62,25 +54,6 @@ async function callApisParellel() {
   console.log(allCoursesCombined);
 }
 
-function parseCourseDataHTML(html, courseIndex) {
-  // load parser
-  const parser = cheerio.load(html);
-  const section = ".content expand";
-
-  parser(section, html).each((_i, elem) => {
-    const text = $(elem).text();
-    const description = $(elem).find("p").text();
-    console.log(description);
-    gCourse[courseIndex].description = description;
-
-    //const table = $(elem).find("td").text();
-
-    //gCourse[courseIndex].table = table;
-    //console.log(description);
-    //console.log(table);
-  });
-}
-
 // Returns list of courses scraped from the html of a course schedule page
 function parseCourseScheduleHTML(html, dept) {
   // will return courses after parse
@@ -109,24 +82,6 @@ function parseCourseScheduleHTML(html, dept) {
   return courses;
 }
 
-async function parseCourse(courseIndex) {
-  const course = gCourses[courseIndex];
-  const courseNumber = course.courseNumber;
-  const dept = course.dept;
-
-  return new Promise(async (resolve, reject) => {
-    await axios
-      .get(
-        `https://courses.students.ubc.ca/cs/courseschedule?tname=subj-course&course=${courseNumber}&campuscd=UBCO&dept=${dept}&pname=subjarea`
-      )
-      .then((response) => {
-        const html = response.data;
-        parseCourseDataHTML(html, courseIndex);
-      })
-      .catch((err) => reject(err.json()));
-  });
-}
-
 // Returns promise that resolves to list of courses for the department
 // On error, rejects with error from API
 async function getCoursesForDept(dept) {
@@ -148,31 +103,3 @@ async function getCoursesForDept(dept) {
 
 // run main
 main();
-
-// courses.forEach((course) => {
-//   console.log("x");
-//   const courseNumber = course.courseNumber;
-//   const dept = course.dept;
-//   const url = `https://courses.students.ubc.ca/cs/courseschedule?tname=subj-course&course=${courseNumber}&campuscd=UBCO&dept=${dept}&pname=subjarea`;
-//   console.log(url);
-
-//   axios(url)
-//     .then((response) => {
-//       const html = response.data;
-//       //console.log(html);
-
-//       const $ = cheerio.load(html);
-
-//       $(".content expand", html).each(function () {
-//         const text = $(this).text();
-//         const description = $(this).find("p").text();
-//         course.description = description;
-
-//         const table = $(this).find("td").text();
-
-//         console.log(description);
-//         console.log(table);
-//       });
-//     })
-//     .catch((err) => console.log(err));
-// });
